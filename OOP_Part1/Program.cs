@@ -2,68 +2,6 @@
 using System.Collections.Generic;
 namespace OOP_Part1
 {
-    // Room class stores hotel room information
-    public class Room
-    {
-        public int RoomNumber { get; set; }
-        public string RoomType { get; set; }
-        public double PricePerNight { get; set; }
-        public bool IsAvailable { get; set; }
-
-
-        public Room(int roomNumber, string roomType,double pricePerNight, bool isAvailable)
-        {
-            RoomNumber = roomNumber;
-            RoomType = roomType;
-            PricePerNight = pricePerNight;
-            IsAvailable = isAvailable;
-        }
-
-        // Displays room details
-        public void DisplayRoom()
-        {
-            Console.WriteLine("Room Number: " + RoomNumber);
-            Console.WriteLine("Room Type: " + RoomType);
-            Console.WriteLine("Price Per Night: " + PricePerNight);
-            Console.WriteLine("Available: " + IsAvailable);
-        }
-
-    }
-    // Guest class stores guest information and booking details
-    public class Guest
-    {
-        public string GuestId { get; set; }
-        public string GuestName { get; set; }
-        public string RoomNumber { get; set; }
-        public string CheckInDate { get; set; }
-        public int TotalNights { get; set; }
-
-        // Constructor initializes guest details
-        public Guest(string guestId, string guestName, string roomNumber, string checkInDate,  int totalNights)
-        {
-            GuestId = guestId;
-            GuestName = guestName;
-            RoomNumber = roomNumber;
-            CheckInDate = checkInDate;
-            TotalNights = totalNights;
-        }
-
-        public double CalculateTotalCost(double pricePerNight)
-        {
-            return pricePerNight * TotalNights;
-        }
-
-        // Displays guest details
-        public void DisplayGuest()
-        {
-            Console.WriteLine("Guest ID: " + GuestId);
-            Console.WriteLine("Guest Name: " + GuestName);
-            Console.WriteLine("Room Number: " + RoomNumber);
-            Console.WriteLine("Check-In Date: " + CheckInDate);
-            Console.WriteLine("Total Nights: " + TotalNights);
-        }
-    }
-   
     internal class Program
     {
         // Displays the main menu
@@ -196,7 +134,77 @@ namespace OOP_Part1
                 Console.WriteLine("Total Nights: " + foundGuest.TotalNights); 
             }
         }
+        public static void SearchFilterRoom(List <Room>rooms , List<Guest> guests)
+        {
+            bool exit = false;
+            while (exit == false)
+            {
+                Console.WriteLine("====================================");
+                Console.WriteLine("SEARCH & FILTER ROOMS");
+                Console.WriteLine("====================================");
+                Console.WriteLine("1. Show all available rooms");
+                Console.WriteLine("2. Filter by room type");
+                Console.WriteLine("3. Filter by max price");
+                Console.WriteLine("4. Room price statistics");
+                Console.WriteLine("0. Back");
+                Console.WriteLine("====================================");
+                Console.Write("Enter your choice: ");
+                int choice = int.Parse(Console.ReadLine());
+                switch (choice)
+                {
+                    case 1:
+                        Console.WriteLine("Show all available rooms");
+                        // Retrieve all available rooms and sort them by price
+                        List<Room> availableRooms = rooms.Where(r => r.IsAvailable == true)
+                                                          .OrderBy(r => r.PricePerNight)
+                                                          .ToList();
+                        // Display the total number of available rooms
+                        Console.WriteLine("\nAvailable Rooms Count: " + availableRooms.Count);
+                        foreach (Room room in availableRooms)
+                        {
+                            room.DisplayRoom();
+                        }
+                        break;
 
+                    case 2:
+                        Console.WriteLine("Filter by room type");
+                        Console.Write("Enter Room Type (Single / Double / Suite): ");
+                        string roomType = Console.ReadLine();
+                        // Retrieve rooms matching the selected type and sort by price
+                        List<Room> filteredRooms = rooms.Where(r => r.RoomType == roomType)
+                                                        .OrderBy(r=> r.PricePerNight)
+                                                        .ToList();
+                        // Display the number of matching rooms
+                        Console.WriteLine("Matching Rooms Count: " + filteredRooms.Count);
+                        foreach (Room room in filteredRooms)
+                        {
+                            room.DisplayRoom();
+                        }
+
+                        break;
+
+                    case 3:
+                        Console.WriteLine("Filter by max price");
+                        break;
+
+                    case 4:
+                        Console.WriteLine("Room price statistics");
+                        break;
+
+                    case 0:
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid Choice");
+                        break;
+                
+            }
+                Console.WriteLine("Enter any key to continue ..");
+                Console.ReadKey();
+                Console.Clear();
+
+            }//End of while
+        }
         static void Main(string[] args)
         {
             //System Lists
@@ -231,7 +239,8 @@ namespace OOP_Part1
                         break;
 
                     case 4:
-                        Console.WriteLine("Search & Filter Rooms");
+                        //Console.WriteLine("Search & Filter Rooms");
+                        SearchFilterRoom(rooms,guests);
                         break;
 
                     case 5:
