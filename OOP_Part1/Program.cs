@@ -11,7 +11,15 @@
             public bool IsAvailable { get; set; }
 
         }
-        
+        // Guest class stores guest information and booking details
+        public class Guest
+        {
+            public string GuestId { get; set; }
+            public string GuestName { get; set; }
+            public string RoomNumber { get; set; }
+            public string CheckInDate { get; set; }
+            public int TotalNights { get; set; }
+        }
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
