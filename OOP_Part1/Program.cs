@@ -8,6 +8,15 @@
         public double PricePerNight { get; set; }
         public bool IsAvailable { get; set; }
 
+        // Displays room details
+        public void DisplayRoom()
+        {
+            Console.WriteLine("Room Number: " + RoomNumber);
+            Console.WriteLine("Room Type: " + RoomType);
+            Console.WriteLine("Price Per Night: " + PricePerNight);
+            Console.WriteLine("Available: " + IsAvailable);
+        }
+
     }
     // Guest class stores guest information and booking details
     public class Guest
@@ -19,10 +28,14 @@
         public int TotalNights { get; set; }
 
 
-        // Displays room details
-        public void DisplayRoom()
+        // Displays guest details
+        public void DisplayGuest()
         {
-
+            Console.WriteLine("Guest ID: " + GuestId);
+            Console.WriteLine("Guest Name: " + GuestName);
+            Console.WriteLine("Room Number: " + RoomNumber);
+            Console.WriteLine("Check-In Date: " + CheckInDate);
+            Console.WriteLine("Total Nights: " + TotalNights);
         }
     }
    
@@ -62,13 +75,12 @@
             // Validate that room number and price are positive
             if (roomNumber <= 0 || pricePerNight <= 0)
             {
-                Console.WriteLine("Error: Room number already exists.");
-
+                Console.WriteLine("Please enter positive numbers");
             }
             // Check if the room number already exists
             else if (rooms.Any(r => r.RoomNumber == roomNumber))
             {
-                Console.WriteLine("Please enter positive numbers");
+                Console.WriteLine("Error: Room number already exists.");
             }
             else
             {
@@ -82,9 +94,38 @@
                 rooms.Add(newRoom);
                 Console.WriteLine("Room added successfully.");
                 Console.WriteLine("Total Rooms: " + rooms.Count);
+                newRoom.DisplayRoom();
             }
         }
-        static void Main(string[] args)
+        // Register a new guest in the system
+        public static void RegisterNewGuest(List<Guest> guests)
+        {
+            Console.Write("Enter Guest Name: ");
+            string guestName = Console.ReadLine();
+            Console.Write("Enter Check-In Date: ");
+            string checkInDate = Console.ReadLine();
+            Console.Write("Enter Total Nights: ");
+            int totalNights = int.Parse(Console.ReadLine());
+
+            if (totalNights <= 0)
+            {
+                Console.WriteLine("Please enter a positive number of nights.");
+                return;
+            }
+            string guestId = "G" + (guests.Count + 1).ToString("000");
+            Guest newGuest = new Guest();
+            newGuest.GuestId = guestId;
+            newGuest.GuestName = guestName;
+            newGuest.CheckInDate = checkInDate;
+            newGuest.TotalNights = totalNights;
+            newGuest.RoomNumber = "Not Assigned";
+
+            guests.Add(newGuest);
+
+            Console.WriteLine("Guest registered successfully.");
+            newGuest.DisplayGuest();
+        }
+            static void Main(string[] args)
         {
             //System Lists
             List<Room> rooms = new List<Room>();
@@ -103,6 +144,7 @@
 
                     case 2:
                         Console.WriteLine("Register New Guest");
+                        RegisterNewGuest(guests);
                         break;
 
                     case 3:
