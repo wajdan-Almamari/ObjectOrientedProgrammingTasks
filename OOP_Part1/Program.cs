@@ -185,6 +185,24 @@ namespace OOP_Part1
 
                     case 3:
                         Console.WriteLine("Filter by max price");
+                        // Filter available rooms by maximum price
+                        Console.Write("Enter Maximum Price: ");
+                        double maxPrice = double.Parse(Console.ReadLine());
+
+                        // Retrieve available rooms within the price limit
+                        List<Room> filterRooms = rooms
+                            .Where(r => r.IsAvailable && r.PricePerNight <= maxPrice)
+                            .OrderBy(r => r.PricePerNight)
+                            .ToList();
+
+                        // Display the number of matching rooms
+                        Console.WriteLine("Matching Rooms Count: " + filterRooms.Count);
+
+                        // Display room details
+                        foreach (Room room in filterRooms)
+                        {
+                            room.DisplayRoom();
+                        }
                         break;
 
                     case 4:
@@ -192,6 +210,7 @@ namespace OOP_Part1
                         break;
 
                     case 0:
+                        exit = true;
                         break;
 
                     default:
