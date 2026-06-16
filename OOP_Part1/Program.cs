@@ -1,4 +1,6 @@
-﻿namespace OOP_Part1
+﻿using System.Linq;
+using System.Collections.Generic;
+namespace OOP_Part1
 {
     // Room class stores hotel room information
     public class Room
@@ -44,6 +46,11 @@
             RoomNumber = roomNumber;
             CheckInDate = checkInDate;
             TotalNights = totalNights;
+        }
+
+        public double CalculateTotalCost(double pricePerNight)
+        {
+            return pricePerNight * TotalNights;
         }
 
         // Displays guest details
@@ -137,7 +144,60 @@
             Console.WriteLine("Guest registered successfully.");
             newGuest.DisplayGuest();
         }
-            static void Main(string[] args)
+        // Books an available room for a registered guest
+        public static void BookRoomForGuest(List<Guest> guests, List<Room> rooms)
+        {
+            // Get guest ID and room number from the user
+            Console.Write("Enter Guest Id: ");
+            string guestId = Console.ReadLine();
+
+            Console.Write("Enter Room Number: ");
+            int roomNumber = int.Parse(Console.ReadLine());
+
+            // Search for the guest and room using LINQ
+            Guest foundGuest = guests.FirstOrDefault(g => g.GuestId == guestId);
+            Room foundRoom = rooms.FirstOrDefault(r => r.RoomNumber == roomNumber);
+            // Check if the guest exists
+            if (foundGuest == null)
+            {
+                Console.WriteLine("Guest not found.");
+            }
+
+            // Check if the room exists
+            else if (foundRoom == null)
+            {
+                Console.WriteLine("Room not found.");
+            }
+
+            // Check if the room is already booked
+            else if (foundRoom.IsAvailable == false)
+            {
+                Console.WriteLine("Room is already booked.");
+            }
+            // Complete the booking process
+            else
+            {
+                // Assign the room to the guest
+                foundGuest.RoomNumber = foundRoom.RoomNumber.ToString();
+
+                // Mark the room as unavailable
+                foundRoom.IsAvailable = false;
+
+                // Calculate the total stay cost
+                double totalCost = foundGuest.CalculateTotalCost(foundRoom.PricePerNight);
+
+                // Display booking confirmation
+                Console.WriteLine("Booking Successful");
+                Console.WriteLine("Guest Name: " + foundGuest.GuestName);
+                Console.WriteLine("Total Cost: " + totalCost.ToString("0.00"));
+                Console.WriteLine("Room Number: " + foundRoom.RoomNumber);
+                Console.WriteLine("Room Type: " + foundRoom.RoomType);
+                Console.WriteLine("Price Per Night: " + foundRoom.PricePerNight);
+                Console.WriteLine("Total Nights: " + foundGuest.TotalNights); 
+            }
+        }
+
+        static void Main(string[] args)
         {
             //System Lists
             List<Room> rooms = new List<Room>();
@@ -167,12 +227,7 @@
 
                     case 3:
                         Console.WriteLine("Book a Room for a Guest");
-                        Console.Write("Enter Guest Id: ");
-                        int guestId = int.Parse(Console.ReadLine());
-                        Console.Write("Enter Room Number: ");
-                        int roomNumber = int.Parse(Console.ReadLine());
-
-                        Guest foundGuest = guests.FirstOrDefault(g => g.GuestId == guestId);
+                        BookRoomForGuest(guests, rooms);
                         break;
 
                     case 4:
