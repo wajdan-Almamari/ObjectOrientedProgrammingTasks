@@ -8,6 +8,15 @@
         public double PricePerNight { get; set; }
         public bool IsAvailable { get; set; }
 
+
+        public Room(int roomNumber, string roomType,double pricePerNight, bool isAvailable)
+        {
+            RoomNumber = roomNumber;
+            RoomType = roomType;
+            PricePerNight = pricePerNight;
+            IsAvailable = isAvailable;
+        }
+
         // Displays room details
         public void DisplayRoom()
         {
@@ -27,6 +36,15 @@
         public string CheckInDate { get; set; }
         public int TotalNights { get; set; }
 
+        // Constructor initializes guest details
+        public Guest(string guestId, string guestName, string roomNumber, string checkInDate,  int totalNights)
+        {
+            GuestId = guestId;
+            GuestName = guestName;
+            RoomNumber = roomNumber;
+            CheckInDate = checkInDate;
+            TotalNights = totalNights;
+        }
 
         // Displays guest details
         public void DisplayGuest()
@@ -85,11 +103,7 @@
             else
             {
                 // Create and add the new room
-                Room newRoom = new Room();
-                newRoom.RoomNumber = roomNumber;
-                newRoom.RoomType = roomType;
-                newRoom.PricePerNight = pricePerNight;
-                newRoom.IsAvailable = true;
+                Room newRoom = new Room(roomNumber, roomType, pricePerNight, true);
 
                 rooms.Add(newRoom);
                 Console.WriteLine("Room added successfully.");
@@ -107,18 +121,16 @@
             Console.Write("Enter Total Nights: ");
             int totalNights = int.Parse(Console.ReadLine());
 
+            // Number of nights must be validated as a positive integer.
             if (totalNights <= 0)
             {
                 Console.WriteLine("Please enter a positive number of nights.");
                 return;
             }
+            //guests list (format: G001, G002, G003 ...).
             string guestId = "G" + (guests.Count + 1).ToString("000");
-            Guest newGuest = new Guest();
-            newGuest.GuestId = guestId;
-            newGuest.GuestName = guestName;
-            newGuest.CheckInDate = checkInDate;
-            newGuest.TotalNights = totalNights;
-            newGuest.RoomNumber = "Not Assigned";
+
+            Guest newGuest = new Guest( guestId, guestName,"Not Assigned", checkInDate, totalNights);
 
             guests.Add(newGuest);
 
@@ -129,6 +141,12 @@
         {
             //System Lists
             List<Room> rooms = new List<Room>();
+            rooms.Add(new Room(101, "Single", 25, true));
+            rooms.Add(new Room(102, "Single", 30, true));
+            rooms.Add(new Room(201, "Double", 45, true));
+            rooms.Add(new Room(202, "Double", 50, true));
+            rooms.Add(new Room(301, "Suite", 80, true));
+            rooms.Add(new Room(302, "Suite", 95, true));
             List<Guest> guests = new List<Guest>();
 
             bool exit = false;
@@ -149,6 +167,12 @@
 
                     case 3:
                         Console.WriteLine("Book a Room for a Guest");
+                        Console.Write("Enter Guest Id: ");
+                        int guestId = int.Parse(Console.ReadLine());
+                        Console.Write("Enter Room Number: ");
+                        int roomNumber = int.Parse(Console.ReadLine());
+
+                        Guest foundGuest = guests.FirstOrDefault(g => g.GuestId == guestId);
                         break;
 
                     case 4:
