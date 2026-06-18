@@ -26,8 +26,10 @@ namespace OOP_Part1
         {
             Console.WriteLine("Room Number: " + RoomNumber);
             Console.WriteLine("Room Type: " + RoomType);
-            Console.WriteLine("Price Per Night: " + PricePerNight);
+            Console.WriteLine("Price Per Night: " + PricePerNight.ToString("0.00 OMR"));
             Console.WriteLine("Available: " + IsAvailable);
+            Console.WriteLine();
+
         }
 
     }

@@ -134,7 +134,7 @@ namespace OOP_Part1
                 Console.WriteLine("Total Nights: " + foundGuest.TotalNights); 
             }
         }
-        public static void SearchFilterRoom(List <Room>rooms , List<Guest> guests)
+        public static void SearchFilterRoom(List <Room>rooms)
         {
             bool exit = false;
             while (exit == false)
@@ -154,15 +154,23 @@ namespace OOP_Part1
                 {
                     case 1:
                         Console.WriteLine("Show all available rooms");
+
                         // Retrieve all available rooms and sort them by price
                         List<Room> availableRooms = rooms.Where(r => r.IsAvailable == true)
                                                           .OrderBy(r => r.PricePerNight)
                                                           .ToList();
                         // Display the total number of available rooms
                         Console.WriteLine("\nAvailable Rooms Count: " + availableRooms.Count);
-                        foreach (Room room in availableRooms)
+                        if (availableRooms.Count == 0)
                         {
-                            room.DisplayRoom();
+                            Console.WriteLine("No rooms found for the selected criteria.");
+                        }
+                        else
+                        {
+                            foreach (Room room in availableRooms)
+                            {
+                                room.DisplayRoom();
+                            }
                         }
                         break;
 
@@ -171,16 +179,23 @@ namespace OOP_Part1
                         Console.Write("Enter Room Type (Single / Double / Suite): ");
                         string roomType = Console.ReadLine();
                         // Retrieve rooms matching the selected type and sort by price
-                        List<Room> filteredRooms = rooms.Where(r => r.RoomType == roomType)
-                                                        .OrderBy(r=> r.PricePerNight)
+                        List<Room> filteredRooms = rooms.Where(r => r.RoomType.ToLower() == roomType.ToLower())
+                                                        .OrderBy(r => r.PricePerNight)
                                                         .ToList();
                         // Display the number of matching rooms
                         Console.WriteLine("Matching Rooms Count: " + filteredRooms.Count);
-                        foreach (Room room in filteredRooms)
+                        if (filteredRooms.Count == 0)
                         {
-                            room.DisplayRoom();
+                            Console.WriteLine("No rooms found for the selected criteria.");
                         }
-
+                        else
+                        {
+                            foreach (Room room in filteredRooms)
+                            {
+                                room.DisplayRoom();
+                            }
+                        }
+              
                         break;
 
                     case 3:
@@ -197,16 +212,34 @@ namespace OOP_Part1
 
                         // Display the number of matching rooms
                         Console.WriteLine("Matching Rooms Count: " + filterRooms.Count);
-
-                        // Display room details
-                        foreach (Room room in filterRooms)
+                        if (filterRooms.Count == 0)
                         {
-                            room.DisplayRoom();
+                            Console.WriteLine("No rooms found for the selected criteria.");
+                        }
+                        else
+                        {
+                            // Display room details
+                            foreach (Room room in filterRooms)
+                            {
+                                room.DisplayRoom();
+                            }
                         }
                         break;
 
                     case 4:
                         Console.WriteLine("Room price statistics");
+                        int totalRooms = rooms.Count;
+                        int availableRoomsCount = rooms.Count(r => r.IsAvailable);
+                        double averagePrice = Math.Round(rooms.Average(r=> r.PricePerNight),2);
+                        double cheapestPrice = rooms.Min(r =>r.PricePerNight);
+                        double expensivePrice = rooms.Max(r => r.PricePerNight);
+                        Console.WriteLine("Room Price Statistics");
+                        Console.WriteLine("=====================");
+                        Console.WriteLine("Total Rooms: " + totalRooms);
+                        Console.WriteLine("Available Rooms: " + availableRoomsCount);
+                        Console.WriteLine("Average Price: " + averagePrice.ToString("0.00 OMR"));
+                        Console.WriteLine("Cheapest Price: " + cheapestPrice.ToString("0.00 OMR"));
+                        Console.WriteLine("Most Expensive Price: " + expensivePrice.ToString("0.00 OMR"));
                         break;
 
                     case 0:
