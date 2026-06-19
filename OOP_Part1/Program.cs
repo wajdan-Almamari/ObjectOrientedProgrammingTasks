@@ -8,26 +8,43 @@ namespace OOP_Part1
         public static void MainMenu()
         {
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("================================================");
             Console.WriteLine("        GRAND VISTA HOTEL - MANAGEMENT SYSTEM");
             Console.WriteLine("================================================");
+            Console.ForegroundColor = ConsoleColor.DarkGreen; 
             Console.WriteLine("  1. Add New Room");
             Console.WriteLine("  2. Register New Guest");
             Console.WriteLine("  3. Book a Room for a Guest");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("  4. Search & Filter Rooms");
             Console.WriteLine("  5. Guest & Booking Statistics");
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("  6. Check Out a Guest");
             Console.WriteLine("  7. Remove Unavailable Rooms");
+            Console.ResetColor();
             Console.WriteLine("  0. Exit");
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("================================================");
             Console.Write("Enter your choice: ");
+            Console.ResetColor();
+
         }
         // Case1 - Add New Room
         public static void AddNewRoom(List<Room> rooms)
         {
-            Console.WriteLine("Add New Room");
             Console.Write("Enter Room Number : ");
-            int roomNumber = int.Parse(Console.ReadLine());
+            int roomNumber = 0;
+
+            while (!int.TryParse(Console.ReadLine(), out roomNumber) || roomNumber <=0)
+            {
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Please enter a valid room number.");
+                Console.ResetColor();
+                Console.Write("Enter Room Number: ");
+            }
+                    
 
             Console.Write("Enter Room Type (Single / Double / Suite): ");
             string roomType = Console.ReadLine();
@@ -36,14 +53,18 @@ namespace OOP_Part1
             double pricePerNight = double.Parse(Console.ReadLine());
 
             // Validate that room number and price are positive
-            if (roomNumber <= 0 || pricePerNight <= 0)
+            if ( pricePerNight <= 0)
             {
-                Console.WriteLine("Please enter positive numbers");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Please enter positive price");
+                Console.ResetColor();
             }
             // Check if the room number already exists
             else if (rooms.Any(r => r.RoomNumber == roomNumber))
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error: Room number already exists.");
+                Console.ResetColor();
             }
             else
             {
@@ -51,7 +72,9 @@ namespace OOP_Part1
                 Room newRoom = new Room(roomNumber, roomType, pricePerNight, true);
 
                 rooms.Add(newRoom);
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Room added successfully.");
+                Console.ResetColor();
                 Console.WriteLine("Total Rooms: " + rooms.Count);
                 newRoom.DisplayRoom();
             }
@@ -139,13 +162,17 @@ namespace OOP_Part1
             bool exit = false;
             while (exit == false)
             {
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("====================================");
                 Console.WriteLine("SEARCH & FILTER ROOMS");
                 Console.WriteLine("====================================");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("1. Show all available rooms");
                 Console.WriteLine("2. Filter by room type");
                 Console.WriteLine("3. Filter by max price");
                 Console.WriteLine("4. Room price statistics");
+                Console.ResetColor();
                 Console.WriteLine("0. Back");
                 Console.WriteLine("====================================");
                 Console.Write("Enter your choice: ");
@@ -214,7 +241,9 @@ namespace OOP_Part1
                         Console.WriteLine("Matching Rooms Count: " + filterRooms.Count);
                         if (filterRooms.Count == 0)
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("No rooms found for the selected criteria.");
+                            Console.ResetColor();
                         }
                         else
                         {
@@ -227,14 +256,15 @@ namespace OOP_Part1
                         break;
 
                     case 4:
-                        Console.WriteLine("Room price statistics");
                         int totalRooms = rooms.Count;
                         int availableRoomsCount = rooms.Count(r => r.IsAvailable);
                         double averagePrice = Math.Round(rooms.Average(r=> r.PricePerNight),2);
                         double cheapestPrice = rooms.Min(r =>r.PricePerNight);
                         double expensivePrice = rooms.Max(r => r.PricePerNight);
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Room Price Statistics");
                         Console.WriteLine("=====================");
+                        Console.ResetColor();
                         Console.WriteLine("Total Rooms: " + totalRooms);
                         Console.WriteLine("Available Rooms: " + availableRoomsCount);
                         Console.WriteLine("Average Price: " + averagePrice.ToString("0.00 OMR"));
@@ -247,7 +277,9 @@ namespace OOP_Part1
                         break;
 
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid Choice");
+                        Console.ResetColor();
                         break;
                 
             }
@@ -277,34 +309,47 @@ namespace OOP_Part1
                 switch (choice)
                 {
                     case 1:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("Add New Room");
+                        Console.ResetColor();
                         AddNewRoom(rooms);
                         break;
 
                     case 2:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Register New Guest");
+                        Console.ResetColor();
                         RegisterNewGuest(guests);
                         break;
 
                     case 3:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Book a Room for a Guest");
+                        Console.ResetColor();
                         BookRoomForGuest(guests, rooms);
                         break;
 
                     case 4:
                         //Console.WriteLine("Search & Filter Rooms");
-                        SearchFilterRoom(rooms,guests);
+                        SearchFilterRoom(rooms);
                         break;
 
                     case 5:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Guest & Booking Statistics");
+                        Console.ResetColor();
                         break;
 
                     case 6:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Check Out a Guest");
+                        Console.ResetColor();
                         break;
 
                     case 7:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Remove Unavailable Rooms");
+                        Console.ResetColor();
                         break;
 
                     case 0:
