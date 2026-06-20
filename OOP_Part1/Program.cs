@@ -289,6 +289,20 @@ namespace OOP_Part1
 
             }//End of while
         }
+        public static void GuestBookingStatistics(List<Guest> guests, List<Room> rooms)
+        {
+            int totalGuests = guests.Count();
+            int bookedGuests = guests.Count(g => g.RoomNumber != "Not Assigned");
+            int totalRooms = rooms.Count();
+            int bookedRooms = rooms.Count(r => r.IsAvailable == false);
+
+            Console.WriteLine("Total Registered Guests: " + totalGuests);
+            Console.WriteLine("Guests With Assigned Rooms: " + bookedGuests);
+            Console.WriteLine("Total Rooms: " + totalRooms);
+            Console.WriteLine("Booked Rooms: " + bookedRooms);
+            List<Guest> activeGuests = guests.Where(g => g.RoomNumber != "Not Assigned").ToList();
+
+        }
         static void Main(string[] args)
         {
             //System Lists
@@ -338,18 +352,21 @@ namespace OOP_Part1
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Guest & Booking Statistics");
                         Console.ResetColor();
+                        GuestBookingStatistics(guests, rooms);
                         break;
 
                     case 6:
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Check Out a Guest");
                         Console.ResetColor();
+                        Console.WriteLine("This feature is under development....");
                         break;
 
                     case 7:
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Remove Unavailable Rooms");
                         Console.ResetColor();
+                        Console.WriteLine("This feature is under development....");
                         break;
 
                     case 0:

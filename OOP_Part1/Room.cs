@@ -24,13 +24,11 @@ namespace OOP_Part1
         // Displays room details
         public void DisplayRoom()
         {
-            Console.WriteLine("Room Number: " + RoomNumber);
-            Console.WriteLine("Room Type: " + RoomType);
-            Console.WriteLine("Price Per Night: " + PricePerNight.ToString("0.00 OMR"));
-            Console.WriteLine("Available: " + IsAvailable);
+            Console.WriteLine();
+            Console.WriteLine($"Room Number: {RoomNumber} | Room Type: {RoomType} | Price Per Night: {PricePerNight:0.00} OMR | Available: {IsAvailable}");
             Console.WriteLine();
 
-        }
+        } 
 
     }
 }
