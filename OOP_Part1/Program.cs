@@ -168,11 +168,12 @@
                     case 3:
                         Console.WriteLine("Book a Room for a Guest");
                         Console.Write("Enter Guest Id: ");
-                        int guestId = int.Parse(Console.ReadLine());
+                        string guestId = Console.ReadLine();
                         Console.Write("Enter Room Number: ");
                         int roomNumber = int.Parse(Console.ReadLine());
 
                         Guest foundGuest = guests.FirstOrDefault(g => g.GuestId == guestId);
+
                         break;
 
                     case 4:
