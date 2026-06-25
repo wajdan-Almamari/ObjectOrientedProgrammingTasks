@@ -368,7 +368,83 @@ namespace OOP_Part1
                 Console.WriteLine(summary);
             }
         }
-            static void Main(string[] args)
+        // Checks out a guest, frees the assigned room, and removes the guest
+        public static void CheckOutGuest(List<Guest> guests, List<Room> rooms)
+        {
+            Console.WriteLine("Check Out a Guest");
+
+            Console.Write("Enter Guest ID: ");
+            string guestId = Console.ReadLine();
+
+            // Find guest by ID
+            Guest guest = guests.FirstOrDefault(g => g.GuestId == guestId);
+
+            if (guest == null)
+            {
+                Console.WriteLine("Guest not found.");
+                return;
+            }
+
+            // Check if guest has an active booking
+            if (guest.RoomNumber == "Not Assigned")
+            {
+                Console.WriteLine("This guest has no active booking.");
+                return;
+            }
+
+            // Find the linked room
+            Room room = rooms.FirstOrDefault(r => r.RoomNumber.ToString() == guest.RoomNumber);
+
+            if (room == null)
+            {
+                Console.WriteLine("Room not found.");
+                return;
+            }
+
+            double totalCost = guest.CalculateTotalCost(room.PricePerNight);
+
+            // Display final bill
+            Console.WriteLine("\nFinal Bill");
+            Console.WriteLine("====================");
+            Console.WriteLine("Guest Name: " + guest.GuestName);
+            Console.WriteLine("Room Number: " + guest.RoomNumber);
+            Console.WriteLine("Room Type: " + room.RoomType);
+            Console.WriteLine("Check-In Date: " + guest.CheckInDate);
+            Console.WriteLine("Total Nights: " + guest.TotalNights);
+            Console.WriteLine("Price Per Night: " + room.PricePerNight.ToString("0.00") + " OMR");
+            Console.WriteLine("Total Cost: " + totalCost.ToString("0.00") + " OMR");
+
+            Console.Write("\nConfirm checkout? (Y/N): ");
+            string confirm = Console.ReadLine();
+
+            if (confirm.ToUpper() == "Y")
+            {
+                // Free the room before removing the guest
+                room.IsAvailable = true;
+
+                // Remove guest from the list
+                guests.Remove(guest);
+
+                bool roomAvailable = rooms.Any(r =>
+                    r.RoomNumber.ToString() == guest.RoomNumber &&
+                    r.IsAvailable == true);
+
+                Console.WriteLine("\nCheckout completed successfully.");
+                Console.WriteLine("Room " + room.RoomNumber + " is now available: " + roomAvailable);
+                Console.WriteLine("Updated Guests Count: " + guests.Count());
+                Console.WriteLine("Updated Rooms Count: " + rooms.Count());
+            }
+            else if (confirm.ToUpper() == "N")
+            {
+                Console.WriteLine("Checkout cancelled. No changes were made.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid confirmation. No changes were made.");
+            }
+        }
+
+        static void Main(string[] args)
         {
             //System Lists
             List<Room> rooms = new List<Room>();
@@ -424,7 +500,7 @@ namespace OOP_Part1
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Check Out a Guest");
                         Console.ResetColor();
-                        Console.WriteLine("This feature is under development....");
+                        CheckOutGuest(guests, rooms);
                         break;
 
                     case 7:
